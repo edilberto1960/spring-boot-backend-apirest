@@ -32,10 +32,10 @@ public class Factura implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "factura_id")
-	private List<ItemFactura> items;
+	private List<ItemFactura> invoiceItems;
 
 	public Factura() {
-		this.items = new ArrayList<ItemFactura>();
+		this.invoiceItems = new ArrayList<ItemFactura>();
 	}
 
 	@PrePersist
@@ -83,16 +83,16 @@ public class Factura implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public List<ItemFactura> getItems() {
-		return items;
+	public List<ItemFactura> getInvoiceItems() {
+		return invoiceItems;
 	}
 
-	public void setItems(List<ItemFactura> items) {
-		this.items = items;
+	public void setInvoiceItems(List<ItemFactura> invoiceItems) {
+		this.invoiceItems = invoiceItems;
 	}
 
 	public void addItemFactura(ItemFactura item) {
-		this.items.add(item);
+		this.invoiceItems.add(item);
 	}
 
 	public void setTotal(Double total) {
@@ -100,16 +100,7 @@ public class Factura implements Serializable {
 	}
 
 	public Double getTotal() {
-		Double calcTotal = 0.0;
-
-		int size = items.size();
-
-		for (int i = 0; i < size; i++) {
-			calcTotal += items.get(i).calcularImporte();
-		}
-		setTotal(calcTotal);
-
-		return calcTotal;
+		return total;
 	}
 
 	private static final long serialVersionUID = 1L;
