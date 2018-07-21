@@ -35,7 +35,7 @@ public class Cliente implements Serializable {
 	@NotNull
 	@Column(name = "create_at")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern="MM.dd.yyyy")
 	private Date createAt;
 
 	@JsonIgnore

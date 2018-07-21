@@ -1,8 +1,11 @@
 package com.bolsadeideas.springboot.backend.apirest.controllers;
 
+import com.bolsadeideas.springboot.backend.apirest.models.dao.IProductoDao;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Factura;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.ItemFactura;
 import com.bolsadeideas.springboot.backend.apirest.models.entity.Producto;
+import com.bolsadeideas.springboot.backend.apirest.models.services.IFacturaservice;
+import com.bolsadeideas.springboot.backend.apirest.models.services.IProductoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +31,12 @@ public class ResController {
     @Autowired
     private IClienteService clienteService;
 
+    @Autowired
+    private IProductoService productoService;
+
+    @Autowired
+    private IFacturaservice facturaservice;
+
     @GetMapping("/clientes")
     public List<Cliente> index() {
         return clienteService.findAll();
@@ -52,9 +61,11 @@ public class ResController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente update(@RequestBody Cliente cliente, @PathVariable Long id) {
         Cliente currentCliente = this.clienteService.findOne(id);
+        System.out.println("CLIENTE DATA RECEIVED " +cliente.getCreateAt());
         currentCliente.setNombre(cliente.getNombre());
         currentCliente.setApellido(cliente.getApellido());
         currentCliente.setEmail(cliente.getEmail());
+        currentCliente.setCreateAt(cliente.getCreateAt());
         this.clienteService.save(currentCliente);
         return currentCliente;
     }
@@ -71,6 +82,7 @@ public class ResController {
 
         System.out.println("Total " + factura.getTotal());
        // Double ttl = factura.setTotal(factura.getTotal());
+
         clienteService.saveFactura(factura);
 
         return new ResponseEntity<Factura>(factura, HttpStatus.OK);
@@ -93,6 +105,17 @@ public class ResController {
         List<Cliente> cliente = clienteService.findClienteByNombre(term);
 
         return cliente;
+    }
+
+
+    @GetMapping("/productos")
+    public List<Producto> getAllProduct() {
+        return productoService.findAll();
+    }
+
+    @GetMapping("/facturas")
+    public List<Factura> getFactura() {
+        return facturaservice.findAll();
     }
 
 

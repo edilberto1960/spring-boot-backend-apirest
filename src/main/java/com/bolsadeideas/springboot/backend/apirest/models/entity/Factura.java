@@ -1,5 +1,6 @@
 package com.bolsadeideas.springboot.backend.apirest.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -17,6 +18,8 @@ public class Factura implements Serializable {
 	private Long id;
 
 
+	private Long number;
+
 	private String descripcion;
 
 	private String observacion;
@@ -25,14 +28,26 @@ public class Factura implements Serializable {
 	@Column(name = "create_at")
 	private Date createAt;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "due_date")
+	private Date dueDate;
+
 	private Double total;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Cliente cliente;
+
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "factura_id")
 	private List<ItemFactura> invoiceItems;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "payments_id")
+	private List<Payments> payments;
+
+
 
 	public Factura() {
 		this.invoiceItems = new ArrayList<ItemFactura>();
@@ -49,6 +64,14 @@ public class Factura implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
 	}
 
 	public String getDescripcion() {
@@ -73,6 +96,14 @@ public class Factura implements Serializable {
 
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	public Cliente getCliente() {
@@ -101,6 +132,14 @@ public class Factura implements Serializable {
 
 	public Double getTotal() {
 		return total;
+	}
+
+	public List<Payments> getPayments() {
+		return payments;
+	}
+
+	public void setPayments(List<Payments> payments) {
+		this.payments = payments;
 	}
 
 	private static final long serialVersionUID = 1L;

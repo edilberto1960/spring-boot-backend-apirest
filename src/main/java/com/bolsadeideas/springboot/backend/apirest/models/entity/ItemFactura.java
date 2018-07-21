@@ -17,7 +17,7 @@ public class ItemFactura implements Serializable {
 
 	private Double precio;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="producto_id")
 	private Producto producto;
 
